@@ -21,4 +21,5 @@ jobs:
     #   env:
     #     image_name: winkelchri/regexr-base
     #     regexr_version: "3.6.1"
-    - run: python3 build.py
+    - name: Build regexr image
+      run: python3 build.py
