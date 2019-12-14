@@ -1,4 +1,50 @@
 import subprocess
+from datetime import datetime as dt
+
+REGEXR_VERSION="3.6.1"
+BASE_IMAGE_NAME = "winkelchri/regexr-base"
 IMAGE_NAME = "winkelchri/regexr"
 
-subprocess.run("docker build -t {} .".format(IMAGE_NAME))
+DATE_FORMAT = r"%Y-%m-%dT%H:%M:%SZ"
+BUILD_DATE = dt.now().strftime(DATE_FORMAT)
+print(BUILD_DATE)
+# BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ'
+
+def main():
+    print("BUILD BASE IMAGE ...")
+    subprocess.run((
+        "docker build -t {image_name}:{regexr_version} --file base.dockerfile "
+        "--build-arg REGEXR_VERSION={regexr_version} "
+        "--build-arg BUILD_DATE={build_date} "
+        "."
+    ).format(
+        image_name=BASE_IMAGE_NAME,
+        regexr_version=REGEXR_VERSION,
+        build_date=BUILD_DATE
+    ))
+
+    print("BUILD FINAL CONTAINER ...")
+    subprocess.run((
+        "docker build -t {image_name}:{version} --file Dockerfile "
+        "--build-arg VERSION={version} "
+        "--build-arg BUILD_DATE={build_date} "
+        "."
+    ).format(
+        image_name=IMAGE_NAME,
+        version=REGEXR_VERSION,
+        build_date=BUILD_DATE
+    ))
+
+    subprocess.run("docker tag {image_name}:{version} {image_name}:{latest}".format(
+        image_name=BASE_IMAGE_NAME,
+        version=REGEXR_VERSION
+    ))
+
+    subprocess.run("docker tag {image_name}:{version} {image_name}:{latest}".format(
+        image_name=IMAGE_NAME,
+        version=REGEXR_VERSION
+    ))
+
+
+if __name__  == "__main__":
+    main()
