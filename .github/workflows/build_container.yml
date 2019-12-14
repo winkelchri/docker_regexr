@@ -9,23 +9,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - run: docker version
-    - run: pwd
-    - run: ls -la
-    # - name: Build base image
-    #   run: >
-    #     docker build -t ${image_name}:${regexr_version} --file base.dockerfile
-    #     --build-arg REGEXR_VERSION=${regexr_version}
-    #     --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')
-    #     .
-    #   env:
-    #     image_name: winkelchri/regexr-base
-    #     regexr_version: "3.6.1"
+    
     - name: Build regexr image
       run: python3 build.py
-    - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
-      with:
-        name: winkelchri/regexr
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Push image to Dockerhub
+      run: |
+        docker login --username ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }}
+        docker push winkelchri/regexr:latest
