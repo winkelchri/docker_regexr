@@ -45,12 +45,12 @@ def main():
     print(build_final_container_command)
     run(build_final_container_command)
 
-    run("docker tag {image_name}:{version} {image_name}:{latest}".format(
+    run("docker tag {image_name}:{version} {image_name}:latest".format(
         image_name=BASE_IMAGE_NAME,
         version=REGEXR_VERSION
     ))
 
-    run("docker tag {image_name}:{version} {image_name}:{latest}".format(
+    run("docker tag {image_name}:{version} {image_name}:latest".format(
         image_name=IMAGE_NAME,
         version=REGEXR_VERSION
     ))
