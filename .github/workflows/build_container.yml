@@ -12,4 +12,13 @@ jobs:
     - run: docker version
     - run: pwd
     - run: ls -la
+    - run: |
+        docker build -t ${image_name}:${regexr_version} --file base.dockerfile
+        --build-arg REGEXR_VERSION=${regexr_version}
+        --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ)
+        .
+      env:
+        image_name: winkelchri/regexr-base
+        regexr_version: "3.6.1"
+
     # - run: python3 build.py
