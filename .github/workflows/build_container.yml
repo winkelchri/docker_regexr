@@ -12,7 +12,7 @@ jobs:
     - run: docker version
     - run: pwd
     - run: ls -la
-    - run: |
+    - run: >
         docker build -t ${image_name}:${regexr_version} --file base.dockerfile
         --build-arg REGEXR_VERSION=${regexr_version}
         --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ)
