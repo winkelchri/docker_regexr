@@ -9,4 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - run: python3 build.py
+    - run: docker version
+    - run: pwd
+    - run: ls -la
+    # - run: python3 build.py
