@@ -64,10 +64,7 @@ def main():
     image_name = IMAGE_NAME
     version_tag = get_latest_tag()
 
-    if sys.argv[1] == '--skip-build':
-        skip_build = True
-    else:
-        skip_build = False
+    skip_build = True if len(sys.argv) > 1 and sys.argv[1] == '--skip-build' else False
 
     if not skip_build:
         build_image(image_name, version_tag)
